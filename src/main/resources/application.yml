@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: bufalo-finance
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/bufalo}
+    username: ${DB_USER:bufalo}
+    password: ${DB_PASSWORD:bufalo}
+  jpa:
+    hibernate:
+      ddl-auto: validate # o Flyway é o dono do schema; o JPA só valida
+    open-in-view: false
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+app:
+  jwt:
+    # Em produção, injete via variável de ambiente. Mínimo 32 bytes p/ HS256.
+    secret: ${JWT_SECRET:troque-isto-por-um-segredo-bem-grande-de-32-bytes-no-minimo}
+    expiration-minutes: ${JWT_EXP_MIN:1440}
+  recurrence:
+    horizon-months: 12 # quantos meses à frente materializar como PROJECTED
+
+server:
+  port: 8080
